@@ -9,5 +9,4 @@ geopy==2.2.0
 keras==2.7.0
 pandas==1.4.0
 protobuf==3.19.4
-Pyrebase==3.0.27
 tensorflow==2.7.0

@@ -4,7 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    path('api/model/', ModelView.as_view()),
     path('pred',views.model_classifier,name="index4"),
     path('signin/', views.signIn),
    	path('postsignIn/', views.postsignIn),
