@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'authentication',
     'widget_tweaks',
-    'pyrebase',
 ]
 
 SWAGGER_SETTINGS = {
