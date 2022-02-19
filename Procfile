@@ -1,1 +1,3 @@
-web: gunicorn exploWebApp.wsgi --log-file -
+web: gunicorn exploWebApp.wsgi:application --log-file - --log-level debug
+python manage.py collectstatic --noinput
+manage.py migrate
