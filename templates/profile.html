@@ -87,10 +87,10 @@
                               <div class="row">
                                 <div class="col-lg-5">
                                   <div class="border-bottom text-center pb-4" style="padding-bottom: 0 !important;">
-                                      {%if u.photoUrl%}
-                                    <img src="{{u.photoUrl}}" alt="profile" class="img-lg rounded-circle mb-3">
+                                    {%if u.photoUrl is defined%}
+                                      <img src="{{u.photoUrl}}" alt="profile" class="img-lg rounded-circle mb-3">
                                     {%else%}
-                                    <h1><i class="ti-user"></i></h1>
+                                      <h1><i class="ti-user"></i></h1>
                                     {%endif%}
                                     <div class="mb-3">
                                       <h3>{{u.displayName}}</h3>
@@ -105,11 +105,7 @@
                                         Status
                                       </span>
                                       <span class="float-right text-muted">
-                                        {%if u.disabled %}
-                                            Disabled
-                                        {%else%}
-                                            Active
-                                        {%endif%}
+                                        Active
                                       </span>
                                     </p>
                                     <p class="clearfix">
