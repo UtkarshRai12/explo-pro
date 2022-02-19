@@ -26,9 +26,9 @@ firebase_admin.initialize_app(cred, {'storageBucket': 'explo-pro.appspot.com'})
 SECRET_KEY = 'x+u*&-uc$g(y#qcvewpkgietbsdfdszxcasdu&zqu+u(!j8wvw5)ean*pl(vc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','*','fasta-protein.herokuapp.com/']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','*','fasta-protein.herokuapp.com']
 
 # Application definition
 
