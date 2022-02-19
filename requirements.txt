@@ -15,6 +15,7 @@ pycryptodome==3.14.1
 requests-toolbelt==0.7.0
 pandas==1.4.0
 protobuf==3.19.4
+openpyxl==3.0.9
 python-jwt==2.0.1
 tensorflow-cpu==2.8.0
 sseclient==0.0.27
