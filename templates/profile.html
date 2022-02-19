@@ -87,7 +87,7 @@
                               <div class="row">
                                 <div class="col-lg-5">
                                   <div class="border-bottom text-center pb-4" style="padding-bottom: 0 !important;">
-                                    {%if u.photoUrl is defined%}
+                                    {%if u|attr('photoUrl') %}
                                       <img src="{{u.photoUrl}}" alt="profile" class="img-lg rounded-circle mb-3">
                                     {%else%}
                                       <h1><i class="ti-user"></i></h1>
