@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo mr-5" href="/"></a>
+            <a class="navbar-brand brand-logo-mini" href="/"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_settings-panel.html -->
+
+        <div id="right-sidebar" class="settings-panel">
+            <i class="settings-close ti-close"></i>
+            <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                        aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
+                        aria-controls="chats-section">CHATS</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="setting-content"> </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel/dashboard">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="/panel/user/">
+                        <i class="icon-head menu-icon"></i>
+                        <span class="menu-title">Users</span>
+
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel/admintb/">
+                        <i class="ti-list menu-icon"></i>
+                        <span class="menu-title">Admin List</span>
+
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/panel/cradmin1/">
+                        <i class="ti-shield menu-icon"></i>
+                        <span class="menu-title">Create Admin</span>
+
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel/logout">
+                        <i class="ti-power-off menu-icon"></i>
+                        <span class="menu-title">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+
+
+
+        <div class="main-panel">
+
+            <div class="content-wrapper">
+
+
+                <div class="col-lg-12" style="padding-bottom: 15px;">
+                    <div class="d-flex justify-content-between">
+                        <small></small>
+                        <h2><small class="text-muted">Step 2 of 3</small></h2>
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 67%" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 class="display-3">Create Admin</h1>
+
+                                <hr>
+
+
+                                {% if l %}
+                                <div class="row">
+                                    <div class="col-lg-5">
+
+                                        <div class="text-center pb-4" style="padding-bottom: 0 !important;">
+                                            <br>
+                                            {%if l.photo_url%}
+                                            <img src="{{l.photo_url}}" alt="profile" class="img-lg rounded-circle mb-3">
+                                            {%else%}
+                                            <h1><i class="ti-user"></i></h1>
+                                            {%endif%}
+
+                                            <div class="mb-3">
+                                                <h3>{{l.display_name}}</h3>
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <h5 class="mb-0 me-2 text-muted"><i
+                                                            class="ti-location-pin"></i>{{country}}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
+                                
+                                <div class="col-lg-7" style="padding-left:3rem;max-height: 540px; overflow-y: auto;">
+                                    
+                                    <div class="py-4">
+                                        <p class="clearfix">
+                                            <span class="float-left">
+                                                Total queries executed
+                                            </span>
+                                            <span class="float-right text-muted">
+                                                {{tq}}
+                                            </span>
+                                        </p>
+                                        <p class="clearfix">
+                                            <span class="float-left">
+                                                Email
+                                            </span>
+                                            <span class="float-right text-muted">
+                                                {{l.email}}
+                                            </span>
+                                        </p>
+                                        <p class="clearfix">
+                                            <span class="float-left">
+                                                Last login at
+                                            </span>
+                                            <span class="float-right text-muted">
+                                                {{llt}}
+                                            </span>
+                                        </p>
+                                        <p class="clearfix">
+                                            <span class="float-left">
+                                                Account created at
+                                            </span>
+                                            <span class="float-right text-muted">
+                                                {{uca}}
+                                            </span>
+                                        </p>
+                                        <p class="clearfix">
+                                            <span class="float-left">
+                                                Provider
+                                            </span>
+                                            <span class="float-right">
+                                                {%if da.providerUserInfo.0.providerId == "google.com"%}
+                                                <i class="fa fa-google"></i>
+                                                {%else%}
+                                                <i class="ti-email"></i>
+                                                {%endif%}
+                                            </span>
+                                        </p>
+                                    
+                                    
+                                    </div>
+                                    
+                                </div>
+                                </div>          
+
+                                <hr>
+                            
+                                <div class="modal fade" id="del-confirm-" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog " role="document">
+                                        <div class="modal-content card-light-danger">
+                                            <div class="modal-header ">
+                                                <h4 class="modal-title" id="exampleModalLabel">Warning</h4>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="white-space:normal;line-height: 160%;">
+                                                    <div class="row  justify-content-center">
+                                                        <i class="text-danger ti-alert display-1"></i><br>
+                                                    </div>
+                                                    <br>
+                                                    Are you absolutely sure you want to grant administrative access to this account?
+                                                    <br>
+                                                    <b>Please note that there is no option to restore the queries performed by this account once the user is granted administrative access.</b>
+                                                    <b>The provider of the new admin account will remain same as the provider of the old user account.</b>
+                                                    <hr>
+                                                    <form action="/panel/cradmin3/" method="POST">
+                                                        {% csrf_token %}
+                                                        
+                                                        <input type="text" id="uui" name="email" class="form-control form-control-lg" value="{{l.email}}"
+                                                            placeholder="Enter the email address of admin" hidden>
+                                                        <div class="mt-3">
+                                                            <input type="submit"
+                                                                class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn"
+                                                                value="Grant Admin access">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                
+                                <form action="/panel/cradmin4/" method="POST" id="newadmin">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="email" id="maill" name="emaill" class="form-control form-control-lg" value="{{email}}"
+                                            hidden>
+                                    </div>
+                                    <div class="form-group">
+                                        <p>  {{email}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Name" value="{{name}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="pass1" name="passs" class="form-control form-control-lg" placeholder="Password" >
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="pass2" name="pass2" class="form-control form-control-lg" placeholder="Confirm Password" >
+                                    </div>
+                                     <div class="d-flex justify-content-between">
+                                         <s></s>
+                                    <button type="submit" form="newadmin" class="btn btn-primary btn-rounded btn-icon" >
+                                        <i class="ti-angle-right"></i>
+                                    </button>
+                                    </div>
+                                </form>
+                                {% endif %}
+                                <div class="d-flex justify-content-between">
+                                    <form action="/panel/cradmin1/" method="POST">
+                                        {% csrf_token %}
+                                            <input type="text" id="uui" name="email" class="form-control form-control-lg" value="{{l.email}}"
+                                                placeholder="Enter the email address of admin" hidden>
+                                        
+                                    <button type="submit" value="prev" class="btn btn-primary btn-rounded btn-icon">
+                                    <i class="ti-angle-left"></i>
+                                    </button>
+                                    </form>
+                                    {% if l %}
+                                    <button value="next" class="btn btn-primary btn-rounded btn-icon" data-bs-toggle="modal" data-bs-target="#del-confirm">
+                                        <i class="ti-angle-right"></i>
+                                    </button>
+                                    {% else %}
+                    
+                                      
+                                    
+                                    {% endif %}
+                                     </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+<!-- content-wrapper ends -->
+<!-- partial:partials/_footer.html -->
+
+<!-- partial -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+<script src="{%static 'js/bulma-calendar.js'%}"></script>
+<script src="{%static 'js/bulma-calendar.min.js'%}"></script>
+<script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+<script src="{%static 'vendors/typeahead.js/typeahead.bundle.min.js'%}"></script>
+<script src="{%static 'vendors/select2/select2.min.js'%}"></script>
+<script src="{%static 'js/off-canvas.js'%}"></script>
+<script src="{%static 'js/hoverable-collapse.js'%}"></script>
+<script src="{%static 'js/template.js'%}"></script>
+<script src="{%static 'js/settings.js'%}"></script>
+<script src="{%static 'js/todolist.js'%}"></script>
+<script src="{%static 'js/file-upload.js'%}"></script>
+<script src="{%static 'js/typeahead.js'%}"></script>
+<script src="{%static 'js/select2.js'%}"></script>
+<script>
+    $('[data-bs-toggle="tooltip"]').tooltip();
+</script>
+
+
+{% endblock %}

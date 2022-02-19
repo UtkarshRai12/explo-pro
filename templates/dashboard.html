@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo mr-5" href="/"></a>
+            <a class="navbar-brand brand-logo-mini" href="/"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_settings-panel.html -->
+
+        <div id="right-sidebar" class="settings-panel">
+            <i class="settings-close ti-close"></i>
+            <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                        aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
+                        aria-controls="chats-section">CHATS</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="setting-content"> </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/panel/dashboard">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel/user">
+                        <i class="icon-head menu-icon"></i>
+                        <span class="menu-title">Users</span>
+                
+                    </a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/panel/admintb/">
+                        <i class="ti-list menu-icon"></i>
+                        <span class="menu-title">Admin List</span>
+                
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/panel/cradmin1/">
+                        <i class="ti-shield  menu-icon"></i>
+                        <span class="menu-title">Create Admin</span>
+                
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel/logout">
+                        <i class="ti-power-off menu-icon"></i>
+                        <span class="menu-title">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+
+
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold">Welcome {{l.displayName}}</h3>
+                                <h6 class="font-weight-normal mb-0">All systems are running smoothly!</h6>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <a class="card tale-bg" href="https://analytics.google.com/analytics/web/?authuser=0#/p300539206/realtime/overview?params=_u..nav%3Dmaui">
+                          
+                          <!-- <img src="https://logos-world.net/wp-content/uploads/2021/02/Google-Analytics-Logo.png"> -->
+                          <h1 class="text-info" style="font-size:17rem; text-align: center;"><i class="ti-stats-up"></i></h1>
+                        </a>
+                    </div>
+                    <div class="col-md-6 grid-margin transparent">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <a class="card card-tale" href="https://console.firebase.google.com/project/explo-pro/authentication/users">
+                                    <div class="card-body">
+                                        <p class="mb-4">Registered Users</p>
+                                        <h1>{{ c }}</h1>
+                                        
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-4 stretch-card transparent">
+                                <a class="card card-dark-blue" href="https://console.firebase.google.com/project/explo-pro/storage/explo-pro.appspot.com/files/~2Finput">
+                                    <div class="card-body">
+                                        <p class="mb-4">Total Queries Run</p>
+                                        <h1>{{q}}</h1>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                                <a class="card card-light-blue" href="https://console.firebase.google.com/project/explo-pro/authentication/users">
+                                    <div class="card-body">
+                                        <p class="mb-4">Verified Users</p>
+                                        <h1>{{ v }}</h1>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-6 stretch-card transparent">
+                                <a class="card card-light-danger" href="https://console.firebase.google.com/project/explo-pro/storage/usage/current-billing/total_byte">
+                                    <div class="card-body">
+                                        <p class="mb-4">Files Stored</p>
+                                      
+                                        <h1>{{f}}</h1>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        
+        <!-- partial -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <script src="{%static 'js/bulma-calendar.js'%}"></script>
+    <script src="{%static 'js/bulma-calendar.min.js'%}"></script>
+    <script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+    <script src="{%static 'vendors/typeahead.js/typeahead.bundle.min.js'%}"></script>
+    <script src="{%static 'vendors/select2/select2.min.js'%}"></script>
+    <script src="{%static 'js/off-canvas.js'%}"></script>
+    <script src="{%static 'js/hoverable-collapse.js'%}"></script>
+    <script src="{%static 'js/template.js'%}"></script>
+    <script src="{%static 'js/settings.js'%}"></script>
+    <script src="{%static 'js/todolist.js'%}"></script>
+    <script src="{%static 'js/file-upload.js'%}"></script>
+    <script src="{%static 'js/typeahead.js'%}"></script>
+    <script src="{%static 'js/select2.js'%}"></script>
+    <script>
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    </script>
+
+
+    {% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+{% load widget_tweaks %}
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+
+
+                        <br>
+                        <h4> Reset Password</h4>
+                        <h6 class="font-weight-light">Reset your password to continue</h6><br>
+                        <form action="/auth/postReset/" method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                    <input type="email" name="email" id="email" placeholder="email" class="form-control form-control-lg" required>
+                            </div>
+                            <div class="mt-3">
+                                <input type="submit" value="Send reset password link"
+                                    class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{%static 'js/off-canvas.js'%}"></script>
+<script src="{%static 'js/hoverable-collapse.js'%}"></script>
+<script src="{%static 'js/template.js'%}"></script>
+<script src="{%static 'js/settings.js'%}"></script>
+<script src="{%static 'js/todolist.js'%}"></script>
+<script>
+    function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        //   var id_token = googleUser.getAuthResponse().id_token;
+        //   var profile = googleUser.getBasicProfile();
+        //   console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        /* console.log("Full Name: " + profile.getName());
+        console.log("Given Name: " + profile.getGivenName());
+        console.log("Family Name: " + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());*/
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8000/google_auth/api/google-auth/');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //   xhr.onload = function() {
+        //      console.log('Signed in as: ' + xhr.responseText);
+        //  };
+        xhr.send('idtoken=' + id_token);
+    }
+
+</script>
+<!-- endinject -->
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+{% load widget_tweaks %}
+
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+
+                        
+                        <br>
+                        <h4>Register</h4>
+                        <h6 class="font-weight-light">Register to continue.</h6><br>
+                        <form action="/auth/postsignUp/" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="Email" name="email" class="form-control form-control-lg"
+                                    placeholder="Email" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control-lg"
+                                    name="pass" placeholder="Password" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control-lg" name="pass-repeat" id="confirm_password" placeholder="Re-enter Password" required>
+                            </div>
+                            <div class="mt-3">
+                                <input type="submit" value="register"
+                                    class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                            </div>
+                            
+
+                        </form>
+                        <br>
+                        <hr>
+                    <div class="text-center mt-4">
+                        Already have an account? <a href="/auth/signin" class="text-primary">Login</a>
+                      </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{%static 'js/off-canvas.js'%}"></script>
+<script src="{%static 'js/hoverable-collapse.js'%}"></script>
+<script src="{%static 'js/template.js'%}"></script>
+<script src="{%static 'js/settings.js'%}"></script>
+<script src="{%static 'js/todolist.js'%}"></script>
+<!-- endinject -->
+{% endblock %}

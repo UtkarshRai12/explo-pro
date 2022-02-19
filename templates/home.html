@@ -1,0 +1,123 @@
+
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+{%csrf_token%}
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth px-0">
+            <div class="row w-100 mx-0">
+                <div class="col-lg-4 mx-auto">
+                    <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                        
+                        <h4>Exploratory</h4>
+                        <h6 class="font-weight-light">Webapp</h6><br>
+                        <a href="/auth/signin"
+                            class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Login</a>
+                        <a href="/auth/signup"
+                            class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Register</a>
+                        <br>
+                        <div class="text-center"><h6 style="margin-bottom: 0rem">OR</h6></div>
+                        <br>
+                            <button type="button" class="btn-lg btn-icon-text btn btn-inverse-dark btn-fw btn-block" id="login">
+                                <i class="fa fa-google btn-icon-prepend"></i>   Sign in with Google
+                              </button>
+            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{%static 'js/off-canvas.js'%}"></script>
+<script src="{%static 'js/hoverable-collapse.js'%}"></script>
+<script src="{%static 'js/template.js'%}"></script>
+<script src="{%static 'js/settings.js'%}"></script>
+<script src="{%static 'js/todolist.js'%}"></script>
+
+<script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="{%static 'js/off-canvas.js'%}"></script>
+<script src="{%static 'js/hoverable-collapse.js'%}"></script>
+<script src="{%static 'js/template.js'%}"></script>
+<script src="{%static 'js/settings.js'%}"></script>
+<script src="{%static 'js/todolist.js'%}"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+<script>
+
+    var firebaseConfig = {
+            apiKey: "AIzaSyCNeTDUQxvUsDSXrLIP8UlhgCbhNJaVp2o",
+            authDomain: "explo-pro.firebaseapp.com",
+            databaseURL: "https://explo-pro-default-rtdb.firebaseio.com",
+            projectId: "explo-pro",
+            storageBucket: "explo-pro.appspot.com",
+            messagingSenderId: "198458808601",
+            appId: "1:198458808601:web:96d9a88c935fde77cc4d88",
+            measurementId: "G-13H7Z0YX61"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+            document.getElementById('login').addEventListener('click', GoogleLogin)
+         let provider = new firebase.auth.GoogleAuthProvider()
+
+            function GoogleLogin() {
+                console.log('Login Btn Call')
+                firebase.auth().signInWithPopup(provider).then(res => {
+                    
+                    firebase.auth().currentUser.getIdToken(true).then((token) => redirectPost(token))
+                    
+                    
+                    
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+
+            
+            function redirectPost(data) {
+                var form = document.createElement('form');
+                document.body.appendChild(form);
+                form.method = 'POST';
+                form.action = "/auth/gsignin/"
+
+                var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+                var csrftoken = document.createElement("input");
+                csrftoken.setAttribute("type", "hidden");
+                csrftoken.setAttribute("name", 'csrfmiddlewaretoken');
+                csrftoken.setAttribute("value", csrfToken);
+                form.appendChild(csrftoken);
+
+
+                var diddd = document.createElement('input');
+                diddd.setAttribute("type","hidden");
+                diddd.setAttribute("name","iddd");
+                diddd.setAttribute("value",data)
+                form.appendChild(diddd);
+
+                form.submit();
+            }
+
+</script>
+
+<script type="text/javascript"
+        src="//rf.revolvermaps.com/0/0/6.js?i=5qnxmlk2dgu&amp;m=7&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80"
+        async="async"></script>
+
+<!-- endinject -->
+{% endblock %}

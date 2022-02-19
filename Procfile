@@ -1,0 +1,1 @@
+web: gunicorn exploWebApp.wsgi --log-file -

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo mr-5" href="/"></a>
+            <a class="navbar-brand brand-logo-mini" href="/"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_settings-panel.html -->
+
+        <div id="right-sidebar" class="settings-panel">
+            <i class="settings-close ti-close"></i>
+            <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                        aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
+                        aria-controls="chats-section">CHATS</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="setting-content"> </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/auth/profile" aria-expanded="false">
+                        <i class="ti-user menu-icon"></i>
+                        <span class="menu-title">Account</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/pred" aria-expanded="false">
+                        <i class="ti-search menu-icon"></i>
+                        <span class="menu-title">Predict</span>
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item active ">
+                    <a class="nav-link" href="/auth/abt" aria-expanded="false">
+                        <i class="ti-help menu-icon"></i>
+                        <span class="menu-title">About Us</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">
+                        <i class="ti-power-off menu-icon"></i>
+                        <span class="menu-title">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+
+
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <script src="{%static 'js/bulma-calendar.js'%}"></script>
+    <script src="{%static 'js/bulma-calendar.min.js'%}"></script>
+    <script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+    <script src="{%static 'vendors/typeahead.js/typeahead.bundle.min.js'%}"></script>
+    <script src="{%static 'vendors/select2/select2.min.js'%}"></script>
+    <script src="{%static 'js/off-canvas.js'%}"></script>
+    <script src="{%static 'js/hoverable-collapse.js'%}"></script>
+    <script src="{%static 'js/template.js'%}"></script>
+    <script src="{%static 'js/settings.js'%}"></script>
+    <script src="{%static 'js/todolist.js'%}"></script>
+    <script src="{%static 'js/file-upload.js'%}"></script>
+    <script src="{%static 'js/typeahead.js'%}"></script>
+    <script src="{%static 'js/select2.js'%}"></script>
+    <script>
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    </script>
+
+
+    {% endblock %}

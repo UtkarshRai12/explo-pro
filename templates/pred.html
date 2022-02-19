@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo mr-5" href="/"></a>
+            <a class="navbar-brand brand-logo-mini" href="/"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_settings-panel.html -->
+
+        <div id="right-sidebar" class="settings-panel">
+            <i class="settings-close ti-close"></i>
+            <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                        aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
+                        aria-controls="chats-section">CHATS</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="setting-content"> </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/profile" aria-expanded="false">
+                        <i class="ti-user menu-icon"></i>
+                        <span class="menu-title">Account</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/auth/pred" aria-expanded="false">
+                        <i class="ti-search menu-icon"></i>
+                        <span class="menu-title">Predict</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item ">
+                    <a class="nav-link" href="/auth/abt" aria-expanded="false">
+                        <i class="ti-help menu-icon"></i>
+                        <span class="menu-title">About Us</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">
+                        <i class="ti-power-off menu-icon"></i>
+                        <span class="menu-title">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                {% if error %}
+                
+                
+                <h6 class="card-body btn-inverse-danger">{{ error }}</h6>
+                
+                {% endif %}
+
+                {% if d %}
+                <div class="row">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <br>
+                        <div class="card">
+                            <div class="card-body" >
+                                <h4 class="card-title">Results</h4>
+                                <p class="card-description">Predicted Results
+                                </p>
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-striped" >
+                                        <thead style="position:sticky;top:0;z-index:100;background-color: white;">
+                                            <tr>
+                                                <th style="position:sticky;top:0;z-index:100;">Serial No.</th>
+                                                <th style="position:sticky;top:0;z-index:100;">Sequence</th>
+                                                <th style="position:sticky;top:0;z-index:100;">Prediction Probability</th>
+                                                <th style="position:sticky;top:0;z-index:100;">Prediction</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                
+                                            {% if d %}
+                                            {% for i in d %}
+                                            <tr>
+                                                <td>{{i.index|add:1}}</td>
+                                                <td>{{i.Sequence}}</td>
+                                                <td>{{i.Prediction_Probability}}</td>
+                                                <td>{{i.Prediction}}</td>
+                                            
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="text-align:center; padding:20px;" class="col-lg-6 mx-auto">
+                                    <a href="{{links}}" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Export to Excel</a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        
+                    </div>
+                </div>
+                {% else %}
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Predict</h4>
+                        <p class="card-description">
+                        Enter the protein sequence in fasta format or use fasta file, satisfying the following conditions:-<br>
+                        1. Use a single-letter code for the amino acids. <br>
+                        2. Only include 20 standard amino acids (ACDEFGHIKLMNPQRSTVWY).
+                        </p>
+                        <br><br> 
+                        <form class="form-inline" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="container">
+                            <div class="row">
+                            <div class="col-5">
+                                <div class="input-group"  >
+                            <input type="text" id="text" name="text"class="form-control mb-2 mr-sm-2" placeholder="protien sequence in fasta format">
+                            </div>
+                            </div>
+                            <div class="col-2">
+                            
+                            <label   class="ml-10 ml-lg-0">OR</label>
+                            
+                            </div>
+                            <div class="col">
+                                <div class="input-group" >
+                            <div class="input-group mb-2 mr-sm-2" >
+                                <input type="file" name="fastafile" id="fastafile" class="filebtn" placeholder="fastafile" accept=".fasta">
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                           <br>
+                           <br>
+                     
+                            <div class="row" >
+                                <div class="col ">
+                                    <div class="input-group">
+                            <label for="length"  style="padding:10px">Length of sequence </label>
+                               
+                                    <input type="number" class="form-control md-2 " id="length" name="length" required min="5" >
+                               
+                                </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row-2">
+                            <input type="submit" value="Generate Predictions" class="btn btn-primary btn-lg btn-block" class="col-6">
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+
+
+                {% endif %}
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <script src="{%static 'js/bulma-calendar.js'%}"></script>
+    <script src="{%static 'js/bulma-calendar.min.js'%}"></script>
+    <script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+    <script src="{%static 'vendors/typeahead.js/typeahead.bundle.min.js'%}"></script>
+    <script src="{%static 'vendors/select2/select2.min.js'%}"></script>
+    <script src="{%static 'js/off-canvas.js'%}"></script>
+    <script src="{%static 'js/hoverable-collapse.js'%}"></script>
+    <script src="{%static 'js/template.js'%}"></script>
+    <script src="{%static 'js/settings.js'%}"></script>
+    <script src="{%static 'js/todolist.js'%}"></script>
+    <script src="{%static 'js/file-upload.js'%}"></script>
+    <script src="{%static 'js/typeahead.js'%}"></script>
+    <script src="{%static 'js/select2.js'%}"></script>
+    <script>
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    </script>
+
+
+    {% endblock %}

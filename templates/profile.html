@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="container-scroller">
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo mr-5" href="/"></a>
+            <a class="navbar-brand brand-logo-mini" href="/"></a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_settings-panel.html -->
+
+        <div id="right-sidebar" class="settings-panel">
+            <i class="settings-close ti-close"></i>
+            <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                        aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chats-tab" data-toggle="tab" href="#chats-section" role="tab"
+                        aria-controls="chats-section">CHATS</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="setting-content"> </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/auth/profile" aria-expanded="false">
+                        <i class="ti-user menu-icon"></i>
+                        <span class="menu-title">Account</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/pred" aria-expanded="false">
+                        <i class="ti-search menu-icon"></i>
+                        <span class="menu-title">Predict</span>
+                    </a>
+                </li>
+               
+                <li class="nav-item ">
+                    <a class="nav-link" href="/auth/abt" aria-expanded="false">
+                        <i class="ti-help menu-icon"></i>
+                        <span class="menu-title">About Us</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">
+                        <i class="ti-power-off menu-icon"></i>
+                        <span class="menu-title">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- partial -->
+
+
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+
+                
+                
+                    
+    
+                    <div class="row">
+                        <div class="col-12">
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-lg-5">
+                                  <div class="border-bottom text-center pb-4" style="padding-bottom: 0 !important;">
+                                      {%if u.photoUrl%}
+                                    <img src="{{u.photoUrl}}" alt="profile" class="img-lg rounded-circle mb-3">
+                                    {%else%}
+                                    <h1><i class="ti-user"></i></h1>
+                                    {%endif%}
+                                    <div class="mb-3">
+                                      <h3>{{u.displayName}}</h3>
+                                      <div class="d-flex align-items-center justify-content-center">
+                                        <h5 class="mb-0 me-2 text-muted">{{request.session.location}}</h5>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="py-4">
+                                    <p class="clearfix">
+                                      <span class="float-left">
+                                        Status
+                                      </span>
+                                      <span class="float-right text-muted">
+                                        {%if u.disabled %}
+                                            Disabled
+                                        {%else%}
+                                            Active
+                                        {%endif%}
+                                      </span>
+                                    </p>
+                                    <p class="clearfix">
+                                      <span class="float-left">
+                                        Email
+                                      </span>
+                                      <span class="float-right text-muted">
+                                        {{u.email}}
+                                      </span>
+                                    </p>
+                                    
+                                    <p class="clearfix">
+                                      <span class="float-left">
+                                        Account created at
+                                      </span>
+                                      <span class="float-right text-muted">
+                                        {{llt}}
+                                      </span>
+                                    </p>
+                                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p class="clearfix">
+                                                <span class="float-left">
+                                                  Provider
+                                                </span>
+                                                <span class="float-right">
+                                                  {%if u.providerUserInfo.0.providerId == "google.com"%}
+                                                  <i class="fa fa-google"></i>
+                                                  {%else%}
+                                                  <i class="ti-email"></i>
+                                                  {%endif%}
+                                                </span>
+                                              </p>
+                                            </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                            aria-hidden="true">
+                                    <div class="modal-dialog " role="document">
+                                        <div class="modal-content card-light-danger">
+                                            <div class="modal-header ">
+                                                <h4 class="modal-title" id="exampleModalLabel"></i> Update User</h4>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                
+                                
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/auth/update/" method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="text" id="uui" name="uiid" class="form-control form-control-lg" value="{{u.localId}}"hidden>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="name">Name</label>
+                                                        <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder={{u.displayName}}>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="photourl">Photo Url</label>
+                                                        <input type="url" class="form-control form-control-lg" name="photourl" id="photourl" placeholder={{u.photoUrl}}>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <input type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Submit">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <button class="btn btn-primary btn-block mb-2"  data-bs-toggle="modal"
+                                  data-bs-target="#update_modal">Update Profile Details</button>
+
+                                  <div class="modal fade" id="change-pass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+                                    <div class="modal-dialog " role="document">
+                                        <div class="modal-content card-light-danger">
+                                            <div class="modal-header ">
+                                                <h4 class="modal-title" id="exampleModalLabel">Change Password</h4>
+                                                    <button type="button" class="close"
+                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="white-space:normal;line-height: 160%;">
+                                                    <br>
+                                                    Choose a strong password and don't reuse it for other accounts.
+                                                    <hr>
+                                                    <form action="/auth/changepass/" method="POST">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            <label for = "uui">Old Password</label>
+                                                            <input type="password" id="uui" name="pasword" class="form-control form-control-lg">
+                                                        </div>
+                                                        <div class="form-group">
+                                                          <label for = "uui">New Password</label>
+                                                          <input type="password" id="pswd1" name="pswd1" class="form-control form-control-lg">
+                                                        </div>
+                                                        <div class="form-group">
+                                                          <label for = "uui">Confirm New Password</label>
+                                                          <input type="password" id="pswd2" name="pswd2" class="form-control form-control-lg">
+                                                        </div>
+                                                        <div class="mt-3">
+                                                            <input type="submit" onclick="matchPassword()" class="btn btn-block btn-dark btn-lg font-weight-medium auth-form-btn" value="Change Password">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  {% if  u.providerUserInfo.0.providerId == "password" %}
+                                  <button class="btn btn-dark btn-block mb-2" data-bs-toggle="modal"
+                                  data-bs-target="#change-pass">Change password</button>
+                                  {% endif %}
+
+                                  <div class="modal fade" id="del-confirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+                                    <div class="modal-dialog " role="document">
+                                        <div class="modal-content card-light-danger">
+                                            <div class="modal-header ">
+                                                <h4 class="modal-title" id="exampleModalLabel">Delete your account</h4>
+                                                    <button type="button" class="close"
+                                                        data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div style="white-space:normal;line-height: 160%;">
+                                                    <div class="row  justify-content-center">
+                                                    <i class="text-danger ti-alert display-1"></i><br>
+                                                    </div>
+                                                    <br>
+                                                    Are you absolutely sure you want to delete your Account?
+                                                    <br>
+                                                    <b>Please note that there is no option to restore the account or its data once it is deleted.</b>
+                                                    <hr>
+                                                    <a href="/auth/delete" class="btn btn-danger btn-block btn-lg">Confirm Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <button class="btn btn-danger btn-block mb-2" data-bs-toggle="modal"
+                                  data-bs-target="#del-confirm">Delete User</button>
+                                  
+                                </div>
+                                <div class="col-lg-7" style="padding-left:3rem;max-height: 540px; overflow-y: auto;">
+                                  <div class="d-block d-md-flex justify-content-between mt-4 mt-md-0 border-bottom">
+                                    <div class="text-center mt-4 mt-md-0">
+                                      <h3>Your queries in database : {{tq}}</h3>
+                                    </div>
+                                  </div>
+                                  <div class="profile-feed">
+                                  {%for dd in dic%}
+                                    <div class="d-flex align-items-start profile-feed-item" style="padding-top:1.5rem;padding-bottom:1rem;">
+                                      <div class="ms-4">
+                                        <h6>
+                                          Query # {{forloop.counter}}
+                                        </h6>
+                                        <p>
+                                          <b>Path: </b>input/{{dd.3}}
+                                        </p>
+                                        <a class="btn btn-primary btn-sm mb-2" href="{{dd.1}}"><i class="ti-arrow-down"></i> Input File</a>
+                                        <a class="btn btn-primary btn-sm mb-2" href="{{dd.0}}"><i class="ti-arrow-down"></i> Output File</a>
+                                      </div>
+                                    </div>
+                                    {%endfor%}
+                                </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                
+
+
+
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+    <script src="{%static 'js/bulma-calendar.js'%}"></script>
+    <script src="{%static 'js/bulma-calendar.min.js'%}"></script>
+    <script src="{%static 'vendors/js/vendor.bundle.base.js'%}"></script>
+    <script src="{%static 'vendors/typeahead.js/typeahead.bundle.min.js'%}"></script>
+    <script src="{%static 'vendors/select2/select2.min.js'%}"></script>
+    <script src="{%static 'js/off-canvas.js'%}"></script>
+    <script src="{%static 'js/hoverable-collapse.js'%}"></script>
+    <script src="{%static 'js/template.js'%}"></script>
+    <script src="{%static 'js/settings.js'%}"></script>
+    <script src="{%static 'js/todolist.js'%}"></script>
+    <script src="{%static 'js/file-upload.js'%}"></script>
+    <script src="{%static 'js/typeahead.js'%}"></script>
+    <script src="{%static 'js/select2.js'%}"></script>
+    <script>
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    </script>
+
+
+    {% endblock %}
