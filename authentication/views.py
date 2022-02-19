@@ -75,7 +75,8 @@ def profile(request):
             messages.info(request, "Welcome "+u['displayName'])
             return render(request, "profile.html", {'u': u, 'llt': llt, 'tq': len(userdatas),
                                                 'dic': output_url_list})
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/no-access')
     
 
@@ -140,7 +141,8 @@ def authdelete(request):
                     print(e)
             messages.success(request, "Account deleted successfully")
             return redirect('/logout')
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/no-access')
 
 
@@ -182,7 +184,8 @@ def changepass(request):
                     print('error')
                     messages.error(request, "Incorrect Password")
             return redirect('/auth/profile/')
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/no-access')
 
 
@@ -242,7 +245,8 @@ def abt(request):
             return redirect('/no-access')
         else:
             return render(request, 'about.html')
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/no-access')
 
 
@@ -558,7 +562,8 @@ def model_classifier(request):
                 return render(request, 'pred.html', context)
 
             return render(request, 'pred.html',)
-    except:
+    except Exception as e:
+        print(e)
         return redirect('/no-access')
 
 
