@@ -52,6 +52,10 @@ def profile(request):
             print('-----------------------',
                 authe.get_account_info(request.session['uid'])['users'][0])
             u = authe.get_account_info(request.session['uid'])['users'][0]
+            if 'photoUrl' in u:
+                flag=1
+            else:
+                flag=0
             llt = datetime.fromtimestamp(int(u['createdAt'])//1000)
             userdatas = databases.collection("userdata").document(
                 u['email']).collection("queries").get()
@@ -74,7 +78,7 @@ def profile(request):
                 output_url_list = []
             messages.info(request, "Welcome "+u['displayName'])
             return render(request, "profile.html", {'u': u, 'llt': llt, 'tq': len(userdatas),
-                                                'dic': output_url_list})
+                                                'dic': output_url_list, 'flag':flag})
     except Exception as e:
         print(e)
         return redirect('/no-access')
