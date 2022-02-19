@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import warnings
 from firebase_admin import firestore, auth, storage as admin_storage
 import firebase
