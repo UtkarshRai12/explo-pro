@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import datetime
-#import django_heroku
+import django_heroku
 import firebase_admin
 from firebase_admin import credentials
 
@@ -147,7 +147,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
