@@ -3,6 +3,7 @@ from firebase_admin import firestore, auth, storage as admin_storage
 import firebase
 from authentication.models import *
 from django.shortcuts import render, redirect
+from django.views.generic import CreateView
 import os
 import requests
 from datetime import datetime
@@ -420,3 +421,15 @@ def create_admin4(request):
             return redirect('/panel/cradmin1/')
     except:
         return redirect('/no-access')
+
+def handle404(request, *args, **argv):
+    return render(request, 'error-404.html')
+
+def handle500(request, *args, **argv):
+    return render(request, 'error-500.html')
+
+def handle400(request, *args, **argv):
+    return render(request, 'error-400.html')
+
+def handle403(request, *args, **argv):
+    return render(request, 'error-403.html')

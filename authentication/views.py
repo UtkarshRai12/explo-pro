@@ -1,4 +1,5 @@
 # IMPORTS AND INITIALIZING FIREBASE
+from unicodedata import unidata_version
 import warnings
 from google.cloud.firestore import GeoPoint
 from firebase_admin import firestore, auth, storage as admin_storage
@@ -13,10 +14,14 @@ import json
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
+import re
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+from elasticsearch import Elasticsearch, helpers
+import configparser
+from datetime import date
 warnings.filterwarnings("ignore")
-
+from geopy.geocoders import Nominatim
+geolocator = Nominatim(user_agent="geoapiExercises")
 bucket = admin_storage.bucket()
 databases = firestore.client()
 
@@ -37,6 +42,13 @@ authe = firebase.auth()
 db = firebase.database()
 storage = firebase.storage()
 
+config = configparser.ConfigParser()
+config.read('example.ini')
+
+es = Elasticsearch(
+    cloud_id=config['ELASTIC']['cloud_id'],
+    basic_auth=(config['ELASTIC']['user'], config['ELASTIC']['password'])
+)
 
 def signIn(request):
     return render(request, "login.html")
@@ -46,16 +58,14 @@ def signIn(request):
 def profile(request):
     try:
         zz= request.session['uid']
+        # print(zz)
         if notlogged(zz):
             return redirect('/no-access')
         else:
             print('-----------------------',
                 authe.get_account_info(request.session['uid'])['users'][0])
             u = authe.get_account_info(request.session['uid'])['users'][0]
-            if 'photoUrl' in u:
-                flag=1
-            else:
-                flag=0
+            print(u['localId'])
             llt = datetime.fromtimestamp(int(u['createdAt'])//1000)
             userdatas = databases.collection("userdata").document(
                 u['email']).collection("queries").get()
@@ -78,9 +88,8 @@ def profile(request):
                 output_url_list = []
             messages.info(request, "Welcome "+u['displayName'])
             return render(request, "profile.html", {'u': u, 'llt': llt, 'tq': len(userdatas),
-                                                'dic': output_url_list, 'flag':flag})
-    except Exception as e:
-        print(e)
+                                                'dic': output_url_list})
+    except:
         return redirect('/no-access')
     
 
@@ -145,8 +154,7 @@ def authdelete(request):
                     print(e)
             messages.success(request, "Account deleted successfully")
             return redirect('/logout')
-    except Exception as e:
-        print(e)
+    except:
         return redirect('/no-access')
 
 
@@ -171,7 +179,7 @@ def changepass(request):
                     print(newp1)
                     x = user['localId']
                     print(newp1)
-                    if len(newp1) > 5:
+                    if passCheak(newp1)[0]==1:
                         print(newp1)
                         auth.update_user(x, password=newp1)
                         print(newp1)
@@ -181,15 +189,15 @@ def changepass(request):
                         return redirect('/')
                     else:
                         print("--------------------------------")
+                        errr=passCheak(newp1)[1]
                         messages.error(
-                            request, "Password length must be greater than 5 characters")
+                            request, errr)
                         return redirect('/auth/profile/')
                 except:
                     print('error')
                     messages.error(request, "Incorrect Password")
             return redirect('/auth/profile/')
-    except Exception as e:
-        print(e)
+    except:
         return redirect('/no-access')
 
 
@@ -249,8 +257,7 @@ def abt(request):
             return redirect('/no-access')
         else:
             return render(request, 'about.html')
-    except Exception as e:
-        print(e)
+    except:
         return redirect('/no-access')
 
 
@@ -334,9 +341,10 @@ def postsignUp(request):
     if passs != pass2:
         messages.warning(request, "Passwords don't match!")
         return render(request, "register.html")
-    if len(passs) < 6:
+    if passCheak(passs)[0]==0:
+        errr=passCheak(passs)[1]
         messages.warning(
-            request, "Password length must be more than 5 characters")
+            request, errr)
         return render(request, "register.html")
     try:
         user = authe.create_user_with_email_and_password(email, passs)
@@ -384,7 +392,7 @@ def model_classifier(request):
         else:
             import os
             BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+            input_method='not assigned'
             now = datetime.now()
             millis = now.strftime("%Y%m%d%H%M%S")
             idtoken = request.session['uid']
@@ -407,7 +415,8 @@ def model_classifier(request):
                     f.write(text)
                     f.close()
                     storage.child("input/"+str(millis)+str() +
-                                "/input.txt").put(filename)
+                                "/input.fasta").put(filename)
+                    input_method='text_input'
                 else:
                     try:
                         myfile = request.FILES['fastafile']
@@ -424,6 +433,7 @@ def model_classifier(request):
                     filename = fs.save(myfile.name, myfile)
                     storage.child("input/"+str(millis) +
                                 "/input.fasta").put(filename, request.session['uid'])
+                    input_method='file_input'
                     uploaded_file_url = fs.url(filename)
                     print(uploaded_file_url)
 
@@ -458,6 +468,7 @@ def model_classifier(request):
 
                 df_sequences = pd.DataFrame()
                 file = open(BASE_DIR+'/'+filename)
+                print(BASE_DIR+'/'+filename)
 
                 records = parse(file, "fasta")
 
@@ -536,10 +547,34 @@ def model_classifier(request):
                 storage.child("input/"+str(millis) +
                             "/output.xlsx").put(filename+"Ans"+".xlsx")
                 x = storage.child("input/"+str(millis)+"/output.xlsx").get_url(None)
-
                 uid = user['users']
                 uid = uid[0]
                 email = uid['email']
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                prof = databases.collection("userdata").document(uid['email']).collection(
+                "profile").document("data").get().to_dict()
+                Latitude=str(prof['location'].latitude)
+                Longitude=str(prof['location'].longitude)
+                location = geolocator.reverse(Latitude+","+Longitude)
+                address = location.raw['address']
+                state = address.get('state', '')
+                country = address.get('country', '')
+                es.index(
+                    index='explo-pro46',
+                    id=millis+uid['localId'],
+                    document={
+                        'user_name':uid['displayName'],
+                        'user_email':uid['email'],
+                        'date':date.today(),
+                        'time':current_time,
+                        'input_file_url':storage.child("input/"+str(millis)+"/input.fasta").get_url(None),
+                        'output_file_url':storage.child("input/"+str(millis)+"/output.xlsx").get_url(None),
+                        'method': input_method,
+                        'state': state,
+                        'country': country
+                    })
+
                 data1 = {"folder": str(millis)}
                 num = databases.collection("userdata").document(
                     email).collection("queries").get()
@@ -552,11 +587,23 @@ def model_classifier(request):
                             mintime = f['folder']
                     bucket.blob("input/"+mintime+"/output.xlsx").delete()
                     bucket.blob("input/"+mintime+"/input.fasta").delete()
+                    document={
+                        'input_file_url':'file deleted from firebase',
+                        'output_file_url':'file deleted from firebase'
+                    }
+                    es.update(
+                        index='explo-pro46',
+                        id=mintime+unidata_version['localId'],
+                        doc=document
+                        
+                    )
                     databases.collection("userdata").document(email).collection("queries").document(todel).delete()
                 databases.collection("userdata").document(email).collection("queries").add(data1)
 
                 file.close()
                 os.remove(BASE_DIR+'/'+filename)
+                os.remove(BASE_DIR+'/'+filename+"Ans"+".xlsx")
+                print('output and input deleted from os')
                 json_records = Final.reset_index().to_json(orient='records')
                 data = []
                 data = json.loads(json_records)
@@ -581,3 +628,33 @@ def notlogged(s):
         return False
     except:
         return True
+
+def passCheak(password):
+    flag = 1
+    error=''
+    while True:  
+        if (len(password)<8):
+            flag = 0
+            error='Length of password must greater then 8'
+            break
+        elif not re.search("[a-z]|[A-Z]", password):
+            flag = 0
+            error='Password must contain a letter'
+            break
+        elif not re.search("[0-9]", password):
+            flag = 0
+            error='Password must contain a number between 0 to 9'
+            break
+        elif not re.search("[_@$~`#%^&*()!+=]", password):
+            flag = 0
+            error='Password must contain a special character in these [_@$~`#%^&*()!+=]'
+            break
+        elif re.search("\s", password):
+            flag = 0
+            error='Enter a password without whitespaces'
+            break
+        else:
+            flag = 1
+            break
+    result=[flag,error]
+    return result

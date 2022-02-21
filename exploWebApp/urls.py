@@ -42,3 +42,8 @@ urlpatterns = [
     path('no-access/',views.noaccess)
 
 ]
+
+handler404 = "panel.views.handle404"
+handler500 = "panel.views.handle500"
+handler403 = "panel.views.handle403"
+handler400 = "panel.views.handle400"
