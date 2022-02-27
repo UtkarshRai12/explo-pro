@@ -16,14 +16,39 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import re
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-from elasticsearch import Elasticsearch, helpers
-import configparser
 from datetime import date
 warnings.filterwarnings("ignore")
 from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="geoapiExercises")
+from opensearchpy import OpenSearch, RequestsHttpConnection
+from requests_aws4auth import AWS4Auth
+import boto3
+from dotenv import load_dotenv
+load_dotenv()
+
+
+host = 'search-explo-pro-hy34vu3i5lhpyej655jl6apxui.us-east-1.es.amazonaws.com' # For example, my-test-domain.us-east-1.es.amazonaws.com
+region = 'us-east-1' # e.g. us-west-1
+
+service = 'es'
+credentials = boto3.Session().get_credentials()
+awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
+auth=(os.getenv('OPEN_USER_ID'),os.getenv('PASSWORD_OPEN'))
+
+search = OpenSearch(
+    hosts = [{'host': host, 'port':443}],
+    http_auth = auth,
+    use_ssl = True,
+    verify_certs = True,
+    connection_class = RequestsHttpConnection
+)
+
+
+
 bucket = admin_storage.bucket()
 databases = firestore.client()
+
+
 
 fireconfig = {
     'apiKey': "AIzaSyCNeTDUQxvUsDSXrLIP8UlhgCbhNJaVp2o",
@@ -41,14 +66,6 @@ firebase = firebase.Firebase(fireconfig)
 authe = firebase.auth()
 db = firebase.database()
 storage = firebase.storage()
-
-config = configparser.ConfigParser()
-config.read('example.ini')
-
-es = Elasticsearch(
-    cloud_id=config['ELASTIC']['cloud_id'],
-    basic_auth=(config['ELASTIC']['user'], config['ELASTIC']['password'])
-)
 
 def signIn(request):
     return render(request, "login.html")
@@ -463,10 +480,11 @@ def model_classifier(request):
                 address = location.raw['address']
                 state = address.get('state', '')
                 country = address.get('country', '')
-                es.index(
+                search.index(
                     index='explo-pro46',
                     id=millis+uid['localId'],
-                    document={
+                    doc_type="_doc",
+                    body={
                         'user_name':uid['displayName'],
                         'user_email':uid['email'],
                         'date':date.today(),
@@ -494,10 +512,11 @@ def model_classifier(request):
                         'input_file_url':'file deleted from firebase',
                         'output_file_url':'file deleted from firebase'
                     }
-                    es.update(
+                    search.update(
                         index='explo-pro46',
                         id=mintime+unidata_version['localId'],
-                        doc=document
+                        doc_type="_doc",
+                        body=document
                         
                     )
                     databases.collection("userdata").document(email).collection("queries").document(todel).delete()
