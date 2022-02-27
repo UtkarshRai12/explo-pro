@@ -122,12 +122,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-### dotenv ###
-.env
+### dotenv ###S
 venv
 
 ### Python ###
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL filesS
 
 # C extensions
 
